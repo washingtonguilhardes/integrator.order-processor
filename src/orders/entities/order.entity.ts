@@ -1,4 +1,4 @@
-import { OrderEntry } from '../../core/orders/domains/order-entry.domain';
+import { OrderEntry } from '@src/core/orders/domains';
 
 export class Order implements OrderEntry {
   order_id: number;

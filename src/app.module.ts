@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { OrderItemModule } from './order-item/order-item.module';
 import { OrdersModule } from './orders/orders.module';
+import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -12,6 +13,7 @@ import { UsersModule } from './users/users.module';
     OrdersModule,
     UsersModule,
     OrderItemModule,
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

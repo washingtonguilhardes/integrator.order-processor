@@ -21,8 +21,9 @@ model Order {
 }
 
 model OrderItem {
-  product_id Int   @id @default(autoincrement())
-  order_id   Int
-  order      Order @relation(fields: [order_id], references: [order_id])
-  value      Float
+  product_id        Int    @id @default(autoincrement())
+  order_id          Int
+  order             Order  @relation(fields: [order_id], references: [order_id])
+  value             Float
+  legacy_product_id String
 }

@@ -1,15 +1,25 @@
 import { LineDataExtractorStrategy } from '../domains/line-data-extrator-strategy.domain';
 import { OrderLineExtractorAdapter } from '../domains/order-line-extractor-adapter.domain';
+import { LegacyOrderFields } from '../enums';
 
 export class OrderLineExtractorAdapterUseCase implements OrderLineExtractorAdapter {
-  constructor(
-    private readonly orderLineMapper: Map<string, LineDataExtractorStrategy<unknown>>,
-  ) {}
+  private orderLineMapper: Map<LegacyOrderFields, LineDataExtractorStrategy<unknown>>;
 
-  execute(line: string): Map<string, unknown> {
-    const data = new Map<string, unknown>();
+  constructor(...strategies: [LegacyOrderFields, LineDataExtractorStrategy<unknown>][]) {
+    this.orderLineMapper = new Map<LegacyOrderFields, LineDataExtractorStrategy<unknown>>(
+      strategies,
+    );
+  }
+
+  execute(line: string): Map<LegacyOrderFields, unknown> {
+    const data = new Map<LegacyOrderFields, unknown>();
     for (const [key, strategy] of this.orderLineMapper.entries()) {
-      data.set(key, strategy.execute(line));
+      try {
+        data.set(key, strategy.execute(line));
+      } catch (error) {
+        console.error(error);
+        throw new Error(`Error extracting data from line: ${line}, ok key: ${key}`);
+      }
     }
     return data;
   }

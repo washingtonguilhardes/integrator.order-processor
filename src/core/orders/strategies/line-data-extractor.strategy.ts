@@ -9,6 +9,7 @@ export abstract class DefaultLineDataExtractorStrategy<T>
     const [start, end] = this.range;
     const value = line.slice(start, end).trim();
     this.validate(value);
+
     return this.transform(value);
   }
 
