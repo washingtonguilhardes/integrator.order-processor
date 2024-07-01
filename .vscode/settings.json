@@ -1,0 +1,74 @@
+{
+  "[markdown]": {
+    "editor.defaultFormatter": null,
+    "editor.formatOnSave": false
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.autoIndent": "full",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit",
+    "source.organizeImports": "explicit",
+    "source.fixAll": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": false,
+  "editor.linkedEditing": true,
+  "editor.renderWhitespace": "boundary",
+  "eslint.workingDirectories": ["./../src/**/*"],
+  "files.autoSave": "off",
+  "files.encoding": "utf8",
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/.expo": true,
+    "**/.git": true,
+    "**/.hg": true,
+    "**/.svn": true,
+    "**/CVS": true
+  },
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "files.watcherExclude": {
+    "**/*.spec.ts": true,
+    "**/.expo/*/**": true,
+    "**/.git/objects/*/**": true,
+    "**/.git/subtree-cache/*/**": true,
+    "**/android/*/**": true,
+    "**/bower_components/*/**": true,
+    "**/ios/*/**": true,
+    "**/lib/*/**": true,
+    "**/node_modules/*/**": true
+  },
+  "html.format.enable": false,
+  "javascript.format.enable": false,
+  "javascript.validate.enable": true,
+  "json.format.enable": false,
+  "search.useIgnoreFiles": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "jest.runAllTestsFirst": false,
+  "jest.autoEnable": false,
+  "jest.showCoverageOnLoad": false,
+  "jest.autoRun": null,
+  "sonarlint.connectedMode.project": {},
+  "[sql]": {
+    "editor.defaultFormatter": "mtxr.sqltools"
+  }
+}
