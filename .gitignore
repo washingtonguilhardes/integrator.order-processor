@@ -67,3 +67,5 @@ temp/
 !.env.example
 *.bak
 .migrations/
+.files/*
+!.files/.keep

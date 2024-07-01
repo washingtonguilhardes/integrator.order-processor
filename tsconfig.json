@@ -20,5 +20,9 @@
     "paths": {
       "@src/*": ["./src/*"]
     }
-  }
+  },
+  "watchOptions": {
+    "excludeDirectories": ["node_modules", "dist", "test", "coverage", ".files"]
+  },
+  "exclude": ["node_modules", "dist", "test", "coverage", ".files"]
 }
