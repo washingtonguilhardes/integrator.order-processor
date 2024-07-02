@@ -17,7 +17,6 @@ export class OrderLineExtractorAdapterUseCase implements OrderLineExtractorAdapt
       try {
         data.set(key, strategy.execute(line));
       } catch (error) {
-        console.error(error);
         throw new Error(`Error extracting data from line: ${line}, ok key: ${key}`);
       }
     }

@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { ProcessLegacyOrderFile } from '@src/core/orders/domains/process-legacy-order-file.domain';
-import { PushUserEntryToStore } from '@src/core/users/domains';
+import { UserEntryBulkUpsert } from '@src/core/users/domains';
 import { SyncOrder } from '../domains/sync-orders.domain';
 
 export class SyncOrderService implements SyncOrder {
@@ -8,15 +8,20 @@ export class SyncOrderService implements SyncOrder {
 
   constructor(
     private readonly processLegacyOrderFileUsecase: ProcessLegacyOrderFile,
-    private readonly upsertUserUseCase: PushUserEntryToStore,
+    private readonly bulkUpsertUserEntry: UserEntryBulkUpsert,
   ) {}
 
   async execute(file: Buffer) {
     const procesedLines = await this.processLegacyOrderFileUsecase.execute(file);
 
-    const users = new Set(procesedLines.map(line => line.user.user_id));
+    const users = new Map(procesedLines.map(line => [line.user.user_id, line.user]));
+
     this.logger.log(`Mapped users ${users.size} to upsert`);
-    const orders = new Set(procesedLines.map(line => line.order.order_id));
+
+    await this.bulkUpsertUserEntry.execute(users.values());
+
+    const orders = new Map(procesedLines.map(line => [line.order.order_id, line.order]));
+
     console.log(orders);
     throw new Error('Not implemented');
   }

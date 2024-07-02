@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { UserEntry } from '@src/core/users/domains';
 import { UserRepository } from '@src/core/users/repositories';
 
 export class DatabaseUserRepository implements UserRepository {
-  constructor(private readonly orderRepository: PrismaClient['orderUser']) {}
+  constructor(private readonly orderRepository: Prisma.OrderUserDelegate) {}
 
   private static mapToEntry(user: { user_id: number; name: string }): UserEntry {
     return {
@@ -22,8 +22,10 @@ export class DatabaseUserRepository implements UserRepository {
   }
 
   async create(entry: UserEntry): Promise<number> {
-    await this.orderRepository.create({
-      data: { user_id: entry.user_id, name: entry.user_name },
+    await this.orderRepository.upsert({
+      create: { user_id: entry.user_id, name: entry.user_name },
+      update: { name: entry.user_name },
+      where: { user_id: entry.user_id },
     });
     return entry.user_id;
   }

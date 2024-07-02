@@ -11,6 +11,7 @@ const config = {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
   collectCoverageFrom: ['**/*.(t|j)s'],
+  coveragePathIgnorePatterns: ['.*\\.module\\.(t|j)s', 'index.ts', 'main.ts'],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
   verbose: true,

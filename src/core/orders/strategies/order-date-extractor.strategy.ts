@@ -4,7 +4,8 @@ import { DefaultLineDataExtractorStrategy } from './line-data-extractor.strategy
 
 export class OrderDateExtractorStrategy extends DefaultLineDataExtractorStrategy<Date> {
   validate(value: string): boolean {
-    if (!dayjs(value, 'YYYYMMDD').isValid()) {
+    const isValid = dayjs(value, 'YYYYMMDD', true).isValid();
+    if (!isValid) {
       throw new Error(`Invalid date: ${value}`);
     }
     return true;

@@ -25,6 +25,6 @@ export class ProcessLegacyOrderFileUsecase implements ProcessLegacyOrderFile {
   }
 
   private async parseFile(line: string): Promise<OrderProcessOutput> {
-    return this.orderEntryLineProcessorForLevacyEntry.execute(line);
+    return await this.orderEntryLineProcessorForLevacyEntry.execute(line);
   }
 }
