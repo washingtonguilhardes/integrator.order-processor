@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   HttpStatus,
   Inject,
   ParseFilePipeBuilder,
@@ -8,13 +9,20 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { SyncOrder } from './domains/sync-orders.domain';
+import {
+  GetAllUsersWithOrders,
+  GetAllUsersWithOrdersKey,
+  SyncOrder,
+  SyncOrderServiceKey,
+} from './domains';
 
 @Controller('orders')
 export class OrdersController {
   constructor(
-    @Inject(SyncOrder)
+    @Inject(SyncOrderServiceKey)
     private readonly syncOrder: SyncOrder,
+    @Inject(GetAllUsersWithOrdersKey)
+    private readonly getAllUsersWithOrders: GetAllUsersWithOrders,
   ) {}
 
   @Post('/sync-with-legacy')
@@ -27,7 +35,11 @@ export class OrdersController {
     )
     file: Express.Multer.File,
   ) {
-    console.log(file);
     await this.syncOrder.execute(file.buffer);
+  }
+
+  @Get()
+  getOrders() {
+    return 'Hello World';
   }
 }

@@ -10,19 +10,28 @@ import {
   BulkOrderEntryUpsertUseCase,
   OrderEntryLineProcessorForLegacyEntryUseCase,
   OrderLineExtractorAdapterUseCase,
+  OrderTotalCalculateUseCase,
   ProcessLegacyOrderFileUsecase,
   PushOrderEntryToStoreUseCase,
 } from '@src/core/orders/usecases';
 
-import { OrderTotalCalculateUseCase } from '@src/core/orders/usecases/order-total-calculate.usecase';
 import {
+  BulkOrderItemEntryUpsertUseCase,
+  PushOrderItemToStoreUsecase,
+} from '@src/core/order-items/usecases';
+import {
+  BulkUserEntryUpsertUseCase,
   PushUserEntryToStoreUseCase,
-  UserEntryBulkUpsertUseCase,
 } from '@src/core/users/usecases';
 import { PrismaService } from '@src/prisma/prisma.service';
-import { DatabaseUserRepository } from '@src/users/impl/database-user.repository';
-import { DatabaseOrderRepository } from '../impl/database-order.repository';
-import { SyncOrderService } from '../services/sync-orders.service';
+
+import {
+  DatabaseOrderItemRepository,
+  DatabaseOrderRepository,
+  DatabaseUserRepository,
+} from '@src/prisma/impl';
+
+import { SyncOrderService } from '../../services/sync-orders.service';
 
 const extractStrategies: [LegacyOrderFields, LineDataExtractorStrategy<unknown>][] = [
   [LegacyOrderFields.USER_ID, new OrderIdentityExtractorStrategy([0, 10])],
@@ -40,7 +49,7 @@ export const syncOrderFactory = (prismaClientService: PrismaService) =>
         new OrderLineExtractorAdapterUseCase(...extractStrategies),
       ),
     ),
-    new UserEntryBulkUpsertUseCase(
+    new BulkUserEntryUpsertUseCase(
       new PushUserEntryToStoreUseCase(
         new DatabaseUserRepository(prismaClientService.orderUser),
       ),
@@ -50,5 +59,10 @@ export const syncOrderFactory = (prismaClientService: PrismaService) =>
         new DatabaseOrderRepository(prismaClientService.order),
       ),
       new OrderTotalCalculateUseCase(),
+    ),
+    new BulkOrderItemEntryUpsertUseCase(
+      new PushOrderItemToStoreUsecase(
+        new DatabaseOrderItemRepository(prismaClientService.orderItem),
+      ),
     ),
   );

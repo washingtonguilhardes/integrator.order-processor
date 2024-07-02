@@ -1,5 +1,5 @@
 import { UserEntry } from './user-entry.domain';
 
-export interface UserEntryBulkUpsert {
+export interface BulkUserEntryUpsert {
   execute(users: IterableIterator<UserEntry>): Promise<Set<number>>;
 }

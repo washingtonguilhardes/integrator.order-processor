@@ -2,15 +2,15 @@ import { Logger } from '@nestjs/common';
 import { BulkOrderItemEntryUpsert } from '@src/core/order-items/domains';
 import { BulkOrderEntryUpsert, OrderEntry } from '@src/core/orders/domains';
 import { ProcessLegacyOrderFile } from '@src/core/orders/domains/process-legacy-order-file.domain';
-import { UserEntryBulkUpsert } from '@src/core/users/domains';
-import { SyncOrder } from '../domains/sync-orders.domain';
+import { BulkUserEntryUpsert } from '@src/core/users/domains';
+import { SyncOrder } from '../domains';
 
 export class SyncOrderService implements SyncOrder {
   private logger = new Logger(SyncOrderService.name);
 
   constructor(
     private readonly processLegacyOrderFile: ProcessLegacyOrderFile,
-    private readonly bulkUserEntryUpsert: UserEntryBulkUpsert,
+    private readonly bulkUserEntryUpsert: BulkUserEntryUpsert,
     private readonly bulkOrderEntryUpsert: BulkOrderEntryUpsert,
     private readonly bulkOrderItemEntryUpsert: BulkOrderItemEntryUpsert,
   ) {}
@@ -40,6 +40,8 @@ export class SyncOrderService implements SyncOrder {
 
     await this.bulkOrderEntryUpsert.execute(orders.values());
 
-    throw new Error('Not implemented');
+    await this.bulkOrderItemEntryUpsert.execute(
+      procesedLines.map(order => order.orderItem)[Symbol.iterator](),
+    );
   }
 }

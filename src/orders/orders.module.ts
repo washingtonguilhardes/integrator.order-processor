@@ -5,15 +5,15 @@ import { MulterModule } from '@nestjs/platform-express';
 import { PrismaModule } from '@src/prisma/prisma.module';
 import { PrismaService } from '@src/prisma/prisma.service';
 import { memoryStorage } from 'multer';
-import { SyncOrder } from './domains/sync-orders.domain';
-import { syncOrderFactory } from './factories';
+import { syncOrderFactory } from './domains/impl';
+import { SyncOrderServiceKey } from './domains/sync-orders.domain';
 import { OrdersController } from './orders.controller';
 
 @Module({
   controllers: [OrdersController],
   providers: [
     {
-      provide: SyncOrder,
+      provide: SyncOrderServiceKey,
       useFactory: syncOrderFactory,
       inject: [PrismaService],
     },

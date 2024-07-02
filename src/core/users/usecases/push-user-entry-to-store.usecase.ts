@@ -5,6 +5,7 @@ export class PushUserEntryToStoreUseCase implements PushUserEntryToStore {
   constructor(private readonly userRepo: UserRepository) {}
 
   async execute(entry: UserEntry): Promise<number> {
-    return await this.userRepo.create(entry);
+    await this.userRepo.save(entry);
+    return entry.user_id;
   }
 }

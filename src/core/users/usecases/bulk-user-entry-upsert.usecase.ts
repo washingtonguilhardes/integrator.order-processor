@@ -1,6 +1,6 @@
-import { PushUserEntryToStore, UserEntry, UserEntryBulkUpsert } from '../domains';
+import { BulkUserEntryUpsert, PushUserEntryToStore, UserEntry } from '../domains';
 
-export class UserEntryBulkUpsertUseCase implements UserEntryBulkUpsert {
+export class BulkUserEntryUpsertUseCase implements BulkUserEntryUpsert {
   constructor(private readonly pushUserEntryToStore: PushUserEntryToStore) {}
 
   async execute(users: IterableIterator<UserEntry>): Promise<Set<number>> {

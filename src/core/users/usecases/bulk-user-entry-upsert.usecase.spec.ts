@@ -1,13 +1,13 @@
 import { PushUserEntryToStore } from '../domains';
-import { UserEntryBulkUpsertUseCase } from './user-entry-bulk-upsert.usecase';
+import { BulkUserEntryUpsertUseCase } from './bulk-user-entry-upsert.usecase';
 
 describe('UserEntryBulkUpsertUseCase', () => {
-  let useCase: UserEntryBulkUpsertUseCase;
+  let useCase: BulkUserEntryUpsertUseCase;
   let pushUserEntryToStoreMock: jest.Mocked<PushUserEntryToStore>;
 
   beforeEach(() => {
     pushUserEntryToStoreMock = { execute: jest.fn() };
-    useCase = new UserEntryBulkUpsertUseCase(pushUserEntryToStoreMock);
+    useCase = new BulkUserEntryUpsertUseCase(pushUserEntryToStoreMock);
   });
 
   it('should push user entries to store and return a set of user IDs', async () => {

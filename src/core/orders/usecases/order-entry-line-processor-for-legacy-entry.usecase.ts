@@ -24,6 +24,7 @@ export class OrderEntryLineProcessorForLegacyEntryUseCase
         product_id: data.get(LegacyOrderFields.PRODUCT_ID) as number,
         value: data.get(LegacyOrderFields.PRODUCT_PRICE) as number,
         order_id: data.get(LegacyOrderFields.ORDER_ID) as number,
+        legacy_product_id: data.get(LegacyOrderFields.PRODUCT_ID) as string,
       },
     };
   }
