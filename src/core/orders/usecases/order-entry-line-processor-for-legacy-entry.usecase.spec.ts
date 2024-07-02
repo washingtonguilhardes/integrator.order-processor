@@ -18,6 +18,7 @@ describe('OrderEntryLineProcessorForLegacyEntryUseCase', () => {
       [LegacyOrderFields.ORDER_ID, 123],
       [LegacyOrderFields.PRODUCT_ID, 456],
       [LegacyOrderFields.PRODUCT_PRICE, 9.99],
+      [LegacyOrderFields.ORDER_DATE, new Date()],
     ]);
     jest.spyOn(orderLineExtractor, 'execute').mockReturnValue(mockData);
 
@@ -29,6 +30,8 @@ describe('OrderEntryLineProcessorForLegacyEntryUseCase', () => {
       order: {
         order_id: 123,
         user_id: 1,
+        order_date: mockData.get(LegacyOrderFields.ORDER_DATE) as Date,
+        total: 9.99,
       },
       orderItem: {
         product_id: 456,

@@ -7,7 +7,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     this.$connect();
   }
 
-  getOrderItemRepo(): Prisma.OrderUserDelegate {
+  getOrderUserRepo(): Prisma.OrderUserDelegate {
     return this.orderUser;
+  }
+
+  getOrderRepo(): Prisma.OrderDelegate {
+    return this.order;
   }
 }

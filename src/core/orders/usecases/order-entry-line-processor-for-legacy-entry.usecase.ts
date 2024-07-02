@@ -17,6 +17,8 @@ export class OrderEntryLineProcessorForLegacyEntryUseCase
       order: {
         order_id: data.get(LegacyOrderFields.ORDER_ID) as number,
         user_id: data.get(LegacyOrderFields.USER_ID) as number,
+        order_date: data.get(LegacyOrderFields.ORDER_DATE) as Date,
+        total: data.get(LegacyOrderFields.PRODUCT_PRICE) as number,
       },
       orderItem: {
         product_id: data.get(LegacyOrderFields.PRODUCT_ID) as number,

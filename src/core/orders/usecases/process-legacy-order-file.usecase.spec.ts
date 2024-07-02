@@ -5,6 +5,8 @@ const resultMocker = (): OrderProcessOutput => ({
   order: {
     order_id: 1,
     user_id: 1,
+    order_date: new Date(),
+    total: 0,
   },
   orderItem: { product_id: 1, value: 1, order_id: 1 },
   user: { user_id: 1, user_name: 'user' },

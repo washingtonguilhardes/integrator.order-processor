@@ -18,13 +18,9 @@ export class ProcessLegacyOrderFileUsecase implements ProcessLegacyOrderFile {
     });
 
     for await (const line of lineStreamReader) {
-      output.push(await this.parseFile(line));
+      output.push(await this.orderEntryLineProcessorForLevacyEntry.execute(line));
     }
 
     return output;
-  }
-
-  private async parseFile(line: string): Promise<OrderProcessOutput> {
-    return await this.orderEntryLineProcessorForLevacyEntry.execute(line);
   }
 }

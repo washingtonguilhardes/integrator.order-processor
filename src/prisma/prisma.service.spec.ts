@@ -24,11 +24,19 @@ describe('PrismaService', () => {
     expect(connectSpy).toHaveBeenCalled();
   });
 
-  it('should return order repo', async () => {
+  it('should return order user repo', async () => {
     Reflect.set(prismaService, 'orderUser', 'orderUser');
 
-    const repo = prismaService.getOrderItemRepo();
+    const repo = prismaService.getOrderUserRepo();
 
     expect(repo).toBe('orderUser');
+  });
+
+  it('should return order repo', async () => {
+    Reflect.set(prismaService, 'order', 'order');
+
+    const repo = prismaService.getOrderRepo();
+
+    expect(repo).toBe('order');
   });
 });

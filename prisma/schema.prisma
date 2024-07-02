@@ -16,6 +16,8 @@ model OrderUser {
 model Order {
   order_id Int         @id @default(autoincrement())
   user_id  Int
+  date     DateTime
+  total    Float
   user     OrderUser   @relation(fields: [user_id], references: [user_id])
   items    OrderItem[]
 }
