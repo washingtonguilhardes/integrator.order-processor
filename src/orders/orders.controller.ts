@@ -5,6 +5,7 @@ import {
   Inject,
   ParseFilePipeBuilder,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -39,7 +40,14 @@ export class OrdersController {
   }
 
   @Get()
-  getOrders() {
-    return 'Hello World';
+  getOrders(
+    @Query('orderId') orderId?: string,
+    @Query('startDate') start?: string,
+    @Query('endDate') end?: string,
+  ) {
+    return this.getAllUsersWithOrders.execute({
+      interval: { start, end },
+      orderId: orderId ? Number(orderId) : null,
+    });
   }
 }

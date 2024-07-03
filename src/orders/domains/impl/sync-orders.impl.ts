@@ -1,68 +1,47 @@
-import { LineDataExtractorStrategy } from '@src/core/orders/domains';
-import { LegacyOrderFields } from '@src/core/orders/enums';
-import {
-  OrderDateExtractorStrategy,
-  OrderIdentityExtractorStrategy,
-  OrderNumberExtractorStrategy,
-  OrderWordExtractorStrategy,
-} from '@src/core/orders/strategies';
-import {
-  BulkOrderEntryUpsertUseCase,
-  OrderEntryLineProcessorForLegacyEntryUseCase,
-  OrderLineExtractorAdapterUseCase,
-  OrderTotalCalculateUseCase,
-  ProcessLegacyOrderFileUsecase,
-  PushOrderEntryToStoreUseCase,
-} from '@src/core/orders/usecases';
+import { Logger } from '@nestjs/common';
+import { BulkOrderItemEntryUpsert } from '@src/core/order-items/domains';
+import { BulkOrderEntryUpsert, OrderEntry } from '@src/core/orders/domains';
+import { ProcessLegacyOrderFile } from '@src/core/orders/domains/process-legacy-order-file.domain';
+import { BulkUserEntryUpsert } from '@src/core/users/domains';
+import { SyncOrder } from '..';
 
-import {
-  BulkOrderItemEntryUpsertUseCase,
-  PushOrderItemToStoreUsecase,
-} from '@src/core/order-items/usecases';
-import {
-  BulkUserEntryUpsertUseCase,
-  PushUserEntryToStoreUseCase,
-} from '@src/core/users/usecases';
-import { PrismaService } from '@src/prisma/prisma.service';
+export class SyncOrderService implements SyncOrder {
+  private logger = new Logger(SyncOrderService.name);
 
-import {
-  DatabaseOrderItemRepository,
-  DatabaseOrderRepository,
-  DatabaseUserRepository,
-} from '@src/prisma/impl';
+  constructor(
+    private readonly processLegacyOrderFile: ProcessLegacyOrderFile,
+    private readonly bulkUserEntryUpsert: BulkUserEntryUpsert,
+    private readonly bulkOrderEntryUpsert: BulkOrderEntryUpsert,
+    private readonly bulkOrderItemEntryUpsert: BulkOrderItemEntryUpsert,
+  ) {}
 
-import { SyncOrderService } from '../../services/sync-orders.service';
+  async execute(file: Buffer) {
+    const procesedLines = await this.processLegacyOrderFile.execute(file);
 
-const extractStrategies: [LegacyOrderFields, LineDataExtractorStrategy<unknown>][] = [
-  [LegacyOrderFields.USER_ID, new OrderIdentityExtractorStrategy([0, 10])],
-  [LegacyOrderFields.USER_NAME, new OrderWordExtractorStrategy([10, 55])],
-  [LegacyOrderFields.ORDER_ID, new OrderIdentityExtractorStrategy([55, 65])],
-  [LegacyOrderFields.PRODUCT_ID, new OrderIdentityExtractorStrategy([65, 75])],
-  [LegacyOrderFields.PRODUCT_PRICE, new OrderNumberExtractorStrategy([75, 87])],
-  [LegacyOrderFields.ORDER_DATE, new OrderDateExtractorStrategy([87, 95])],
-];
+    const users = new Map(procesedLines.map(line => [line.user.user_id, line.user]));
 
-export const syncOrderFactory = (prismaClientService: PrismaService) =>
-  new SyncOrderService(
-    new ProcessLegacyOrderFileUsecase(
-      new OrderEntryLineProcessorForLegacyEntryUseCase(
-        new OrderLineExtractorAdapterUseCase(...extractStrategies),
-      ),
-    ),
-    new BulkUserEntryUpsertUseCase(
-      new PushUserEntryToStoreUseCase(
-        new DatabaseUserRepository(prismaClientService.orderUser),
-      ),
-    ),
-    new BulkOrderEntryUpsertUseCase(
-      new PushOrderEntryToStoreUseCase(
-        new DatabaseOrderRepository(prismaClientService.order),
-      ),
-      new OrderTotalCalculateUseCase(),
-    ),
-    new BulkOrderItemEntryUpsertUseCase(
-      new PushOrderItemToStoreUsecase(
-        new DatabaseOrderItemRepository(prismaClientService.orderItem),
-      ),
-    ),
-  );
+    this.logger.log(`Mapped users ${users.size} to upsert`);
+
+    await this.bulkUserEntryUpsert.execute(users.values());
+
+    const orders = new Map<number, OrderEntry[]>();
+    const orderIds = new Set(procesedLines.map(order => order.order.order_id));
+
+    for (const orderId of orderIds) {
+      orders.set(
+        orderId,
+        procesedLines
+          .filter(order => order.order.order_id === orderId)
+          .map(order => order.order),
+      );
+    }
+
+    this.logger.log(`Mapped orders ${orderIds.size} to upsert`);
+
+    await this.bulkOrderEntryUpsert.execute(orders.values());
+
+    await this.bulkOrderItemEntryUpsert.execute(
+      procesedLines.map(order => order.orderItem)[Symbol.iterator](),
+    );
+  }
+}

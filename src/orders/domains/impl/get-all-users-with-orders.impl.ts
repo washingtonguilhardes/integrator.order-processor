@@ -1,14 +1,11 @@
-import { GetAllOrdersGroupedByUsers, UserEntryWithOrders } from '@src/core/users/domains';
-import { UserRepository } from '@src/core/users/repositories';
+import { FetchUsersWithOrders, UserEntryWithOrders } from '@src/core/users/domains';
+import { UserWithOrdersFilter } from '@src/core/users/repositories';
+import { GetAllUsersWithOrders } from '../get-all-users-with-orders.domain';
 
-export class GetAllUsersWithOrdersImpl implements GetAllOrdersGroupedByUsers {
-  constructor(private readonly userRepository: UserRepository) {}
+export class GetAllUsersWithOrdersImpl implements GetAllUsersWithOrders {
+  constructor(private readonly fetchUsersWithOrders: FetchUsersWithOrders) {}
 
-  async execute(): Promise<UserEntryWithOrders[]> {
-    const users = await this.userRepository.getAll();
-    return users.map(user => ({
-      ...user,
-      orders: orders.filter(order => order.userId === user.id),
-    }));
+  async execute(filter?: UserWithOrdersFilter): Promise<UserEntryWithOrders[]> {
+    return this.fetchUsersWithOrders.execute(filter);
   }
 }

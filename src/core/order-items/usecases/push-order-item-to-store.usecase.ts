@@ -5,11 +5,7 @@ export class PushOrderItemToStoreUsecase implements PushOrderItemEntryToStore {
   constructor(private readonly orderItemRepository: OrderItemRepository) {}
 
   async execute(orderItem: OrderItemEntry): Promise<number> {
-    await this.orderItemRepository.save({
-      value: orderItem.value,
-      order_id: orderItem.order_id,
-      legacy_product_id: orderItem.legacy_product_id,
-    });
+    await this.orderItemRepository.save(orderItem);
     return orderItem.product_id;
   }
 }

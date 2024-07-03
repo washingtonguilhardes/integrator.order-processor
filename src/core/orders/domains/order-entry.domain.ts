@@ -7,6 +7,9 @@ export interface OrderEntry {
   total: number;
 }
 
-export interface OrderEntryWithProducts extends OrderEntry {
-  products: OrderItemEntry[];
+export interface OrderEntryWithProducts {
+  date: Date;
+  total: number;
+  order_id: number;
+  products: Pick<OrderItemEntry, 'product_id' | 'value'>[];
 }

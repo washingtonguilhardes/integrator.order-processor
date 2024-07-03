@@ -6,11 +6,32 @@ services:
     restart: always
     volumes:
       - pgdata:/var/lib/postgresql
+      - ./prisma/migrations/20240703194041_init:/docker-entrypoint-initdb.d
     ports:
       - '5432:5432'
     environment:
       POSTGRES_USER: pguser
       POSTGRES_PASSWORD: LocalDB@123Pass
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U pguser']
+      interval: 1s
+      timeout: 5s
+      retries: 5
+  orderprocessorapi:
+    image: orderprocessorapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    depends_on:
+      orderprocessor:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://pguser:LocalDB@123Pass@orderprocessor:5432/pguser
+      PORT: 8080
+    restart: on-failure
+
   pgadmin:
     image: dpage/pgadmin4:8.9
     depends_on:

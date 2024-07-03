@@ -3,7 +3,7 @@ export interface PaginatedResponse<T> {
   entries: T[];
   pageSize: number;
 }
-export interface PaginatedRepository<T> {
-  getAll(page: number, limit: number): Promise<PaginatedResponse<T>>;
+export interface PaginatedRepository<T, F = unknown> {
+  getAll(filter?: F): Promise<PaginatedResponse<T>>;
   count(): Promise<number>;
 }

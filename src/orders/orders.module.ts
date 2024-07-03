@@ -5,8 +5,9 @@ import { MulterModule } from '@nestjs/platform-express';
 import { PrismaModule } from '@src/prisma/prisma.module';
 import { PrismaService } from '@src/prisma/prisma.service';
 import { memoryStorage } from 'multer';
-import { syncOrderFactory } from './domains/impl';
+import { GetAllUsersWithOrdersKey } from './domains';
 import { SyncOrderServiceKey } from './domains/sync-orders.domain';
+import { getAllUsersWithOrdersFactory, syncOrderFactory } from './factories';
 import { OrdersController } from './orders.controller';
 
 @Module({
@@ -15,6 +16,11 @@ import { OrdersController } from './orders.controller';
     {
       provide: SyncOrderServiceKey,
       useFactory: syncOrderFactory,
+      inject: [PrismaService],
+    },
+    {
+      provide: GetAllUsersWithOrdersKey,
+      useFactory: getAllUsersWithOrdersFactory,
       inject: [PrismaService],
     },
   ],

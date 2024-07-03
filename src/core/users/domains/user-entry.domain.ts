@@ -5,6 +5,8 @@ export interface UserEntry {
   user_name: string;
 }
 
-export interface UserEntryWithOrders extends UserEntry {
+export interface UserEntryWithOrders {
+  user_id: number;
+  name: string;
   orders: OrderEntryWithProducts[];
 }
