@@ -1,2 +1,2 @@
 // jest.setup.ts
-// adicionar o setup caso seja necessário
+process.env.TZ = 'UTC';

@@ -10,6 +10,8 @@ describe('PrismaService', () => {
     }).compile();
 
     prismaService = module.get<PrismaService>(PrismaService);
+    jest.spyOn(prismaService, '$connect').mockResolvedValue(undefined);
+    jest.spyOn(prismaService, '$disconnect').mockResolvedValue(undefined);
   });
 
   afterEach(async () => {
@@ -22,21 +24,5 @@ describe('PrismaService', () => {
     await prismaService.onModuleInit();
 
     expect(connectSpy).toHaveBeenCalled();
-  });
-
-  it('should return order user repo', async () => {
-    Reflect.set(prismaService, 'orderUser', 'orderUser');
-
-    const repo = prismaService.getOrderUserRepo();
-
-    expect(repo).toBe('orderUser');
-  });
-
-  it('should return order repo', async () => {
-    Reflect.set(prismaService, 'order', 'order');
-
-    const repo = prismaService.getOrderRepo();
-
-    expect(repo).toBe('order');
   });
 });

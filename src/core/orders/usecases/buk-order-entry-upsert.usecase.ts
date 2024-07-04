@@ -1,16 +1,9 @@
-import {
-  BulkOrderEntryUpsert,
-  OrderEntry,
-  OrderTotalCalculate,
-  PushOrderEntryToStore,
-} from '../domains';
+import { BulkOrderEntryUpsert, OrderEntry } from '../domains';
 
-export class BulkOrderEntryUpsertUseCase implements BulkOrderEntryUpsert {
-  constructor(
-    private readonly pushOrderEntryToStore: PushOrderEntryToStore,
-    private readonly orderTotalCalculate: OrderTotalCalculate,
-  ) {}
-
+export class BulkOrderEntryUpsertUseCase
+  extends BulkOrderEntryUpsert
+  implements BulkOrderEntryUpsert
+{
   async execute(orderEntries: IterableIterator<OrderEntry[]>): Promise<number[]> {
     const orderIds = [];
 

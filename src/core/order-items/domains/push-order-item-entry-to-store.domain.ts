@@ -1,5 +1,5 @@
 import { OrderItemEntry } from './order-item-entry.domain';
 
-export interface PushOrderItemEntryToStore {
-  execute(orderItem: OrderItemEntry): Promise<number>;
+export abstract class PushOrderItemEntryToStore {
+  abstract execute(orderItem: OrderItemEntry): Promise<number>;
 }

@@ -1,5 +1,5 @@
 import { UserEntry } from '../domains';
 
-export interface UserRepository {
-  save(entry: Partial<UserEntry>): Promise<number>;
+export abstract class UserRepository {
+  abstract save(entry: Partial<UserEntry>): Promise<number>;
 }

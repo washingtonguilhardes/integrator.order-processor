@@ -6,7 +6,7 @@ describe('UserEntryBulkUpsertUseCase', () => {
   let pushUserEntryToStoreMock: jest.Mocked<PushUserEntryToStore>;
 
   beforeEach(() => {
-    pushUserEntryToStoreMock = { execute: jest.fn() };
+    pushUserEntryToStoreMock = { execute: jest.fn() } as any;
     useCase = new BulkUserEntryUpsertUseCase(pushUserEntryToStoreMock);
   });
 

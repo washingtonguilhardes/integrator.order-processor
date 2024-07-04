@@ -1,20 +1,8 @@
 import { Prisma } from '@prisma/client';
-import {
-  OrderEntry,
-  OrderEntryWithProducts,
-  OrderRepository,
-} from '@src/core/orders/domains';
+import { OrderEntry, OrderRepository } from '@src/core/orders/domains';
 
-export class DatabaseOrderRepository implements OrderRepository {
+export class DatabaseOrderRepositoryImpl implements OrderRepository {
   constructor(private readonly orderRepository: Prisma.OrderDelegate) {}
-
-  findAll(interval?: [string, string][]): Promise<OrderEntryWithProducts[]> {
-    throw new Error('Method not implemented.');
-  }
-
-  getOneByItem(orderId: number): Promise<OrderEntryWithProducts> {
-    throw new Error('Method not implemented.');
-  }
 
   async save(orderEntry: OrderEntry): Promise<number> {
     await this.orderRepository.upsert({

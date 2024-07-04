@@ -2,19 +2,18 @@
 const config = {
   moduleFileExtensions: ['js', 'json', 'ts'],
   rootDir: 'src',
-  testRegex: '.*\\.spec\\.ts$',
+  testRegex: '.*\\.e2e-spec\\.ts$',
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
-  collectCoverageFrom: ['**/*\\.(t|j)s'],
+  collectCoverageFrom: ['**/*.(t|j)s'],
   coveragePathIgnorePatterns: [
     '.*\\.module\\.(t|j)s',
     'index.ts',
     'main.ts',
-    '.*\\.e2e-spec\\.(t|j)s',
     'expected-result.ts',
   ],
-  coverageDirectory: '../coverage',
+  coverageDirectory: '../coverage-e2e',
   testEnvironment: 'node',
   verbose: true,
   moduleNameMapper: {

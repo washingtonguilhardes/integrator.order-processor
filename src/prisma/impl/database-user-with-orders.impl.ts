@@ -7,11 +7,16 @@ import {
 } from '@src/core/users/repositories';
 import * as dayjs from 'dayjs';
 
-export class UserWithOrdersRepositoryImpl implements UserWithOrdersRepository {
+export class DatabaseUserWithOrdersRepositoryImpl
+  extends UserWithOrdersRepository
+  implements UserWithOrdersRepository
+{
   constructor(
     private readonly userRepository: Prisma.OrderUserDelegate,
     private readonly orderRepository: Prisma.OrderDelegate,
-  ) {}
+  ) {
+    super();
+  }
 
   async getAll(
     filter: UserWithOrdersFilter,

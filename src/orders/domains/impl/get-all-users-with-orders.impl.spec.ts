@@ -8,7 +8,7 @@ describe('GetAllUsersWithOrdersImpl', () => {
   beforeEach(() => {
     fetchUsersWithOrders = {
       execute: jest.fn().mockResolvedValue([]),
-    };
+    } as any;
     getAllUsersWithOrdersImpl = new GetAllUsersWithOrdersImpl(fetchUsersWithOrders);
   });
 

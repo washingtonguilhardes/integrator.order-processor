@@ -1,12 +1,9 @@
-import {
-  BulkOrderItemEntryUpsert,
-  OrderItemEntry,
-  PushOrderItemEntryToStore,
-} from '../domains';
+import { BulkOrderItemEntryUpsert, OrderItemEntry } from '../domains';
 
-export class BulkOrderItemEntryUpsertUseCase implements BulkOrderItemEntryUpsert {
-  constructor(private readonly pushOrderEntryToStore: PushOrderItemEntryToStore) {}
-
+export class BulkOrderItemEntryUpsertUseCase
+  extends BulkOrderItemEntryUpsert
+  implements BulkOrderItemEntryUpsert
+{
   async execute(orderEntries: IterableIterator<OrderItemEntry>): Promise<number[]> {
     const productIds: number[] = [];
     for (const orderEntry of orderEntries) {

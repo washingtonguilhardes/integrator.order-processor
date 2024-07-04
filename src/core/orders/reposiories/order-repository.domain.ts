@@ -1,8 +1,6 @@
-import { OrderEntry, OrderEntryWithProducts } from '../domains/order-entry.domain';
+import { OrderEntry } from '../domains/order-entry.domain';
 
-export interface OrderRepository {
-  save(order: OrderEntry): Promise<number>;
-  findAll(interval?: [string, string][]): Promise<OrderEntryWithProducts[]>;
-  getOneByItem(orderId: number): Promise<OrderEntryWithProducts | null>;
+export abstract class OrderRepository {
+  abstract save(order: OrderEntry): Promise<number>;
 }
 export const ORDER_REPOSITORY = Symbol('OrderRepository');

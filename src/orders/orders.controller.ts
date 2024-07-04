@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   HttpStatus,
-  Inject,
   ParseFilePipeBuilder,
   Post,
   Query,
@@ -10,19 +9,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  GetAllUsersWithOrders,
-  GetAllUsersWithOrdersKey,
-  SyncOrder,
-  SyncOrderServiceKey,
-} from './domains';
+import { GetAllUsersWithOrders, SyncOrder } from './domains';
 
-@Controller('orders')
+@Controller('/orders')
 export class OrdersController {
   constructor(
-    @Inject(SyncOrderServiceKey)
     private readonly syncOrder: SyncOrder,
-    @Inject(GetAllUsersWithOrdersKey)
     private readonly getAllUsersWithOrders: GetAllUsersWithOrders,
   ) {}
 

@@ -1,5 +1,6 @@
 import { OrderProcessOutput } from './order-process-output.domain';
 
-export interface ProcessLegacyOrderFile {
-  execute(file: Buffer): Promise<OrderProcessOutput[]>;
+export abstract class ProcessLegacyOrderFile {
+  abstract execute(file: Buffer): Promise<OrderProcessOutput[]>;
 }
+export const ProcessLegacyOrderFileKey = Symbol('ProcessLegacyOrderFile');

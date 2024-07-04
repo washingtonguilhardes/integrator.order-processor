@@ -1,6 +1,6 @@
 import { OrderItemEntry, PushOrderItemEntryToStore } from '../domains';
 import { OrderItemRepository } from '../repositories';
-import { PushOrderItemToStoreUsecase } from './push-order-item-to-store.usecase';
+import { PushOrderItemEntryToStoreUsecase } from './push-order-item-to-store.usecase';
 
 describe('PushOrderItemToStoreUsecase', () => {
   let usecase: PushOrderItemEntryToStore;
@@ -8,7 +8,7 @@ describe('PushOrderItemToStoreUsecase', () => {
 
   beforeEach(() => {
     repository = { save: jest.fn().mockReturnValue(1) } as any;
-    usecase = new PushOrderItemToStoreUsecase(repository);
+    usecase = new PushOrderItemEntryToStoreUsecase(repository);
   });
 
   it('should save the order item and return the product ID', async () => {

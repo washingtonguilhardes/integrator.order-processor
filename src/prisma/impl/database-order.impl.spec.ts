@@ -1,12 +1,12 @@
-import { DatabaseOrderRepository } from './database-order.repository';
+import { DatabaseOrderRepositoryImpl } from './database-order.impl';
 
 describe('DatabaseOrderRepository', () => {
-  let repository: DatabaseOrderRepository;
+  let repository: DatabaseOrderRepositoryImpl;
   let orderRepo: jest.Mocked<{ upsert: jest.Func }>;
 
   beforeEach(async () => {
     orderRepo = { upsert: jest.fn() };
-    repository = new DatabaseOrderRepository(orderRepo as any);
+    repository = new DatabaseOrderRepositoryImpl(orderRepo as any);
   });
 
   describe('save', () => {

@@ -1,7 +1,7 @@
 import { OrderItemEntry, PushOrderItemEntryToStore } from '../domains';
 import { OrderItemRepository } from '../repositories';
 
-export class PushOrderItemToStoreUsecase implements PushOrderItemEntryToStore {
+export class PushOrderItemEntryToStoreUsecase implements PushOrderItemEntryToStore {
   constructor(private readonly orderItemRepository: OrderItemRepository) {}
 
   async execute(orderItem: OrderItemEntry): Promise<number> {

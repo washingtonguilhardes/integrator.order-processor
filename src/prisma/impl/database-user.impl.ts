@@ -2,8 +2,10 @@ import { Prisma } from '@prisma/client';
 import { UserEntry } from '@src/core/users/domains';
 import { UserRepository } from '@src/core/users/repositories';
 
-export class DatabaseUserRepository implements UserRepository {
-  constructor(private readonly orderUserRepository: Prisma.OrderUserDelegate) {}
+export class DatabaseUserRepository extends UserRepository implements UserRepository {
+  constructor(private readonly orderUserRepository: Prisma.OrderUserDelegate) {
+    super();
+  }
 
   async save(entry: UserEntry): Promise<number> {
     await this.orderUserRepository.upsert({

@@ -1,4 +1,4 @@
-import { PaginatedRepository } from '@src/core/shared/repositories';
+import { PaginatedRepository, PaginatedResponse } from '@src/core/shared/repositories';
 import { UserEntryWithOrders } from '../domains';
 
 export interface UserWithOrdersFilter {
@@ -6,5 +6,12 @@ export interface UserWithOrdersFilter {
   readonly interval?: { readonly start?: string; readonly end?: string };
 }
 
-export interface UserWithOrdersRepository
-  extends PaginatedRepository<UserEntryWithOrders, UserWithOrdersFilter> {}
+export abstract class UserWithOrdersRepository
+  implements PaginatedRepository<UserEntryWithOrders, UserWithOrdersFilter>
+{
+  abstract getAll(
+    filter?: UserWithOrdersFilter,
+  ): Promise<PaginatedResponse<UserEntryWithOrders>>;
+
+  abstract count(): Promise<number>;
+}

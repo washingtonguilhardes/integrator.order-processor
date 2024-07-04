@@ -1,5 +1,8 @@
+import { UserRepository } from '../repositories';
 import { UserEntry } from './user-entry.domain';
 
-export interface PushUserEntryToStore {
-  execute(entry: UserEntry): Promise<number>;
+export abstract class PushUserEntryToStore {
+  constructor(protected readonly userRepo: UserRepository) {}
+
+  abstract execute(entry: UserEntry): Promise<number>;
 }

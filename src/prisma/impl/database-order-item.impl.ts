@@ -2,8 +2,13 @@ import { EnumStatus, Prisma } from '@prisma/client';
 import { OrderItemEntry } from '@src/core/order-items/domains';
 import { OrderItemRepository } from '@src/core/order-items/repositories';
 
-export class DatabaseOrderItemRepository implements OrderItemRepository {
-  constructor(private readonly orderItemRepository: Prisma.OrderItemDelegate) {}
+export class DatabaseOrderItemRepositoryImpl
+  extends OrderItemRepository
+  implements OrderItemRepository
+{
+  constructor(private readonly orderItemRepository: Prisma.OrderItemDelegate) {
+    super();
+  }
 
   async save(orderItem: OrderItemEntry): Promise<void> {
     const existingOrderItem = await this.orderItemRepository.findFirst({
